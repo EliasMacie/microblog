@@ -1,0 +1,180 @@
+.conteiner{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    /* background-color: lightblue; */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.conteudo{
+    display: flex;
+    flex-direction: column;
+    background-color: red;
+}
+
+.areaVoltar{
+    width: 100%;
+    background-color: brown;
+}
+
+.butaoVoltar{
+    display: block;
+    height: 30px;
+    width: 80px;
+}
+
+.areaForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: green; */
+    width: 100%;
+    gap: 50px;
+}
+
+.areaContinuar{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: yellow;
+}
+
+.butaoContinuar{
+    display: block;
+    width: 340px;
+    height: 60px;
+    background-color: black;
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+.areaDataNascimento{
+    display: flex;
+    gap: 10px;
+}
+.inputDia{
+    display: block;
+    width: 90px;
+    height: 60px;
+    font-size: 1.3rem;
+    text-align: center;
+    outline: none;
+    border: 1px 1px 1px 1px solid black;
+    border-radius: 30px 0px 0px 30px;
+}
+
+.selectMes{
+    display: block;
+    width: 125px;
+    height: 60px;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.selectAno{
+    display: block;
+    width: 106px;
+    height: 60px;
+    font-size: 1.3rem;
+    text-align: center;
+    border: 1px 1px 1px 1px solid black;
+    border-radius: 0px 30px 30px 0px;
+}
+
+.input{
+    display: block;
+    width: 285px;
+    height: 60px;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: none;
+    box-sizing: border-box;
+    font-size: 20px;
+    border-radius: 0px 30px 30px 0px;
+}
+
+.input:focus{
+    display: block;
+    width: 285px;
+    height: 60px;
+    border-right: 3px solid black;
+    border-top: 3px solid black;
+    border-bottom: 3px solid black;
+    border-left: none;
+    box-sizing: border-box;
+    font-size: 20px;
+    border-radius: 0px 30px 30px 0px;
+    outline: none;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 350px;
+    padding: 5px;
+    /* background-color: red; */
+}
+
+.inputArea{
+    display: flex;
+    align-items: center;
+}
+
+.icone{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 55px;
+    height: 60px;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-radius: 30px 0px 0px 30px;
+    padding: 0px 10px 0 0;
+}
+
+.iconePerson{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 55px;
+    height: 60px;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-radius: 30px 0px 0px 30px;
+    padding: 3px 10px 0px 0;
+}
+
+.iconeFocus{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 55px;
+    height: 60px;
+    border-bottom: 3px solid black;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-radius: 30px 0px 0px 30px;
+    padding: 0px 10px 0 0;
+}
+
+.iconeFocusPerson{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 55px;
+    height: 60px;
+    border-bottom: 3px solid black;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-radius: 30px 0px 0px 30px;
+    padding: 3px 10px 0px 0;
+}
