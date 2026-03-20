@@ -20,6 +20,8 @@ export default function Register(){
     const [focus2, setFocus2] = useState(false)
     const [focus3, setFocus3] = useState(false)
     const [focus4, setFocus4] = useState(false)
+
+    const [loading, setLoading] = useState(false)
     
 
     const handlerNumber = (e) => {
@@ -38,19 +40,30 @@ export default function Register(){
         setDia(valor)
     }
 
-    const enviarCodigoParaEmail = async () =>{
+    const enviarCodigoParaEmail = async () => {
+        setLoading(true); // inicia loading
+        try {
+            const response = await fetch('/api/user/register?op=enviarCodigoEmail',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({email})
+            });
+            const data = await response.json();
 
-        const response = await fetch('/api/user/register?op=enviarCodigoEmail',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({email})
-        })
-        if(response.ok){
-            setPagina(pagina + 1);
+            if(data.sucesso){
+                setPagina(pagina + 1);
+            } else {
+                alert("Erro ao enviar o código");
+            }
+
+        } catch(err) {
+            console.error(err);
+            alert("Erro na requisição");
+        } finally {
+            setLoading(false); // termina loading
         }
-
     }
 
     const handlerContinuar = () => {
@@ -69,6 +82,8 @@ export default function Register(){
 
     return(
         <div className={styles.conteiner}>
+            {loading?(<div>Carregando...</div>):(
+                <>
                 <div className={styles.areaVoltar}>
                     <button className={styles.butaoVoltar} onClick={voltar}>voltar</button>
                 </div>
@@ -238,6 +253,9 @@ export default function Register(){
                 <div className={styles.areaContinuar}>
                     <button className={styles.butaoContinuar} onClick={enviarCodigoParaEmail}>continuar</button>
                 </div>
-            </div>
+                </>
+            )}
+        </div>
+            
     );
 }

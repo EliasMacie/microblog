@@ -11,6 +11,10 @@ export class RegisterController {
   async createOne(@Body() createUserDto: CreateUserDto) {
     return this.registerService.createOne(createUserDto);
   }
+  @Post('email')
+  async enviarEmail(@Body('email') email: string) {
+    return this.registerService.enviarCodigo(email);
+  }
 
   @Get()
   async findAll(): Promise<User[]> {

@@ -7,7 +7,9 @@ export async function POST(req: Request) {
 
     switch (op) {
         case "enviarCodigoEmail":
-            await enviarCodigoEmail(req);
+            const data = await enviarCodigoEmail(req);
+            return NextResponse.json(data)
+            break;
         default:
             return NextResponse.json({ error: "Operação inválida" }, { status: 400 });
     }
