@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { User } from './interface/user.interface';
 import * as nodemailer from 'nodemailer';
@@ -15,13 +14,15 @@ export class RegisterService {
   }
 
   async enviarCodigo(email: string) {
+    const codigo = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
+
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
       secure: true,
       auth: {
-        user: 'eliasaraomacie38@gmail.com',
-        pass: 'ziqksdkuveizfluc',
+        user: `${emailUser}`,
+        pass: `${emailPass}`,
       },
     });
     try {
@@ -29,11 +30,11 @@ export class RegisterService {
         from: `"katruz" <${emailUser}>`,
         to: `${email}`,
         subject: 'Codigo de Verifição',
-        text: '123456',
+        text: `${codigo}`,
       });
 
       console.log('Email Enviado: ', info.messageId);
-      return { sucesso: true };
+      return { sucesso: true, codigo };
     } catch (error) {
       console.error('Email Enviado: ', error);
       return { sucesso: false };

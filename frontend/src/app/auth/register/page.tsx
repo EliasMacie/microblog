@@ -10,7 +10,8 @@ export default function Register(){
     const [password, setPassword] = useState('');
     const [confirmarPassword, setConfirmarPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [codigo, setCodigo] = useState('');
+    const [codigoEntrada, setCodigoEntrada] = useState('');
+    const [codigoVerficacao, setCodigoVerificao] = useState('');
     const [dia, setDia] = useState('');
     const [mes, setMes] = useState('');
     const [ano, setAno] = useState('');
@@ -41,7 +42,6 @@ export default function Register(){
     }
 
     const enviarCodigoParaEmail = async () => {
-        setLoading(true); // inicia loading
         try {
             const response = await fetch('/api/user/register?op=enviarCodigoEmail',{
                 method: 'POST',
@@ -54,6 +54,7 @@ export default function Register(){
 
             if(data.sucesso){
                 setPagina(pagina + 1);
+                setCodigoVerificao(data.codigo);
             } else {
                 alert("Erro ao enviar o código");
             }
@@ -66,9 +67,22 @@ export default function Register(){
         }
     }
 
+    const verificarCodigo = async () => {
+        if(codigoVerficacao === codigoEntrada){
+            setLoading(false)
+            setPagina(pagina + 1)
+        }else{
+            setLoading(false)
+            alert("Codigo Incorreto");
+        }
+    } 
+
     const handlerContinuar = () => {
+        setLoading(true); // inicia loading
         if(pagina === 1){
-            
+            enviarCodigoParaEmail()
+        }else if(pagina === 2){
+            verificarCodigo()
         }
         if(pagina > 3) return;
     }
@@ -208,7 +222,12 @@ export default function Register(){
                             <>
                                 <div style={{display:'flex', flexDirection:'column', gap:'10px'}}>
                                     <label htmlFor="" style={{fontSize:"20px"}}>Introduza o codigo:</label>
-                                    <input type="text" style={{display:'block', outline:'none', borderRadius:'30px', width:"340px", height:"60px", fontSize:"20px", letterSpacing:"20px", textAlign:'center'}}/>
+                                    <input 
+                                        type="text" 
+                                        style={{display:'block', outline:'none', borderRadius:'30px', width:"340px", height:"60px", fontSize:"20px", letterSpacing:"20px", textAlign:'center'}}
+                                        value={codigoEntrada}
+                                        onChange={(e) => setCodigoEntrada(e.target.value)}
+                                    />
                                 </div>
                             </>
                         )}
@@ -251,7 +270,7 @@ export default function Register(){
                     </form>
                 </div>
                 <div className={styles.areaContinuar}>
-                    <button className={styles.butaoContinuar} onClick={enviarCodigoParaEmail}>continuar</button>
+                    <button className={styles.butaoContinuar} onClick={handlerContinuar}>continuar</button>
                 </div>
                 </>
             )}
