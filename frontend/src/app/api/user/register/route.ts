@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { enviarCodigoEmail } from "./functions/enviarCodigoEmail"
+import { validarCodigoEmail } from "./functions/validarCodigoEmail";
 
 export async function POST(req: Request) {
     const { searchParams } = new URL(req.url);
@@ -7,8 +8,10 @@ export async function POST(req: Request) {
 
     switch (op) {
         case "enviarCodigoEmail":
-            const data = await enviarCodigoEmail(req);
-            return NextResponse.json(data)
+            return NextResponse.json(await enviarCodigoEmail(req))
+            break;
+        case "validarCodigoEmail":
+            return NextResponse.json(await validarCodigoEmail(req))
             break;
         default:
             return NextResponse.json({ error: "Operação inválida" }, { status: 400 });

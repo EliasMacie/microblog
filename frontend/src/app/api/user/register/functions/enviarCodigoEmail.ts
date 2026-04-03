@@ -4,7 +4,7 @@ export async function enviarCodigoEmail(req: Request){
     const body = await req.json();
     const {email} = body;
 
-    const response = await fetch('http://localhost:4000/user/register/email',{
+    const response = await fetch('http://localhost:4000/user/register/enviarCodigo',{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
