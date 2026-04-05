@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
@@ -5,6 +6,8 @@ import { User } from './interface/user.interface';
 import * as nodemailer from 'nodemailer';
 import { ConfigService } from '@nestjs/config';
 import { ValidarCodigoDto } from './dto/validar-codigo.dto';
+import { CriarUsuarioDto } from './dto/criar-usuario.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class RegisterService {
@@ -15,8 +18,53 @@ export class RegisterService {
     private readonly configService: ConfigService,
   ) {}
 
-  createOne(user: User) {
-    this.users.push(user);
+  async criarUsuario(criarUsuario: CriarUsuarioDto) {
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const senhaHash = await bcrypt.hash(criarUsuario.password, 10);
+
+      const response1 = await queryRunner.query(
+        `CALL utilizador(?, NULL, ?, ?, ?, ?)`,
+        [
+          'criar',
+          criarUsuario.nomeCompleto,
+          criarUsuario.email,
+          senhaHash,
+          criarUsuario.data,
+        ],
+      );
+
+      const utilizadorId = response1?.[0]?.[0]?.id;
+      if (!utilizadorId) throw new Error('Erro ao criar utilizador');
+
+      const response2 = await queryRunner.query(
+        `CALL perfil(?, NULL, ?, ?, ?, ?, NULL, NULL, NULL)`,
+        [
+          'criar',
+          utilizadorId,
+          criarUsuario.nomePerfil,
+          criarUsuario.username,
+          0,
+        ],
+      );
+
+      const perfilId = response2?.[0]?.[0]?.id;
+      if (!perfilId) throw new Error('Erro ao criar perfil');
+
+      await queryRunner.commitTransaction();
+
+      return { sucesso: true, utilizadorId, perfilId };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      console.error('Erro na transação:', error);
+      return { sucesso: false, mensagem: (error as Error).message };
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async validarCodigo(validarCodigo: ValidarCodigoDto) {

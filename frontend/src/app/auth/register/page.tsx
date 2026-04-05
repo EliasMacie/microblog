@@ -25,12 +25,26 @@ export default function Register(){
 
     const [loading, setLoading] = useState(false)
 
-    const pagina1Valida =
+    const emailValido = (email:string) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    const dataValida = (dia, mes, ano) => {
+        if (!dia || !mes || !ano) return false;
+
+        const data = new Date(ano, mes - 1, dia);
+
+        return (
+            data.getFullYear() === Number(ano) &&
+            data.getMonth() === Number(mes) - 1 &&
+            data.getDate() === Number(dia)
+        );
+    };
+
+    const pagina1Valida = 
         nomeCompleto.trim() !== '' &&
-        email.trim() !== '' &&
-        dia !== '' &&
-        mes !== '' &&
-        ano !== '';
+        emailValido(email) &&
+        dataValida(dia, mes, ano);
     
     const pagina2Valida = codigoEntrada.trim().length === 6;
 
@@ -128,20 +142,58 @@ export default function Register(){
         } finally{
             setLoading(false)
         }
-        
+    }
 
+    const criarUsuario = async () => {
+        try{
+            const response = await fetch('/api/user/register?op=criarUsuario',{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nomeCompleto, 
+                    email, 
+                    data: `${ano}-${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`,
+                    password, 
+                    nomePerfil, 
+                    username: userName
+                })
+            });
+
+            const data = await response.json();
+            if(data.sucesso){
+                alert('usuario criado');
+            }
+        }catch(error){
+            console.error(error);
+            alert('erro na criacao do usuario')
+        }finally{
+            setLoading(false)
+            router.push('login')
+        }
     } 
+
+
+    function capitalizeEachWord(text: string) {
+        return text
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+        }
+
+    const handleNome = (e) => {
+        const valor = e.target.value;
+        setNomeCompleto(capitalizeEachWord(valor));
+    }
 
     const handlerContinuar = () => {
         setLoading(true); // inicia loading
         if(pagina === 1){
-            setLoading(false);
-            setPagina(pagina + 1)
-            // enviarCodigoParaEmail();
+            enviarCodigoParaEmail();
         }else if(pagina === 2){
-            setLoading(false);
-            setPagina(pagina + 1)
-            // verificarCodigo();
+            verificarCodigo();
         }else if(pagina === 3){
             setLoading(false);
             setPagina(pagina + 1)
@@ -149,8 +201,7 @@ export default function Register(){
             setLoading(false);
             setPagina(pagina + 1)
         }else if(pagina === 5){
-            setLoading(false);
-            setPagina(pagina + 1)
+            criarUsuario()
         }
     }
 
@@ -183,7 +234,7 @@ export default function Register(){
                                         className={styles.input}
                                         value={nomeCompleto}
                                         placeholder='Nome Completo'
-                                        onChange={(e) => setNomeCompleto(e.target.value)}
+                                        onChange={handleNome}
                                         onFocus={() => setFocus1(true)}
                                         onBlur={() => setFocus1(false)}
                                     />
@@ -280,6 +331,18 @@ export default function Register(){
                                             <option value="2013">2013</option>
                                             <option value="2014">2014</option>
                                         </select>
+                                    </div>
+                                    <div style={{display:"flex", flexDirection:"column"}}>
+                                        {email && !emailValido(email) && (
+                                            <small style={{color:'red'}}>
+                                                -Email inválido
+                                            </small>
+                                        )}
+                                        {(dia || mes || ano) && !dataValida(dia, mes, ano) && (
+                                            <small style={{color:'red'}}>
+                                                -Data inválida. Verifique o dia, mês e ano.
+                                            </small>
+                                        )}
                                     </div>
                                     <p style={{color:'#737373', fontSize:'16px', marginTop:"20px"}}>
                                         Essas informações não serão exibidas publicamente.
@@ -392,7 +455,7 @@ export default function Register(){
                     </form>
                 </div>
                 <div className={`${formularioValidado? styles.areaContinuar : styles.disabled}`}>
-                    <button className={styles.butaoContinuar} onClick={handlerContinuar} disabled={!formularioValidado}>continuar</button>
+                    <button className={styles.butaoContinuar} onClick={handlerContinuar} disabled={!formularioValidado}>Continuar</button>
                 </div>
                 </>
             )}

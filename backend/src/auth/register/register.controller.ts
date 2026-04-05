@@ -1,16 +1,31 @@
-import { Controller, Get, Post, Body, Query, Param } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Controller, Get, Post, Body, Query, Param, HttpStatus, HttpException } from '@nestjs/common';
 import { RegisterService } from './register.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './interface/user.interface';
 import { ValidarCodigoDto } from './dto/validar-codigo.dto';
+import { CriarUsuarioDto } from './dto/criar-usuario.dto';
 
 @Controller('user/register')
 export class RegisterController {
   constructor(private registerService: RegisterService) {}
 
-  @Post()
-  async createOne(@Body() createUserDto: CreateUserDto) {
-    return this.registerService.createOne(createUserDto);
+  @Post('criar')
+  async criarUsuario(@Body() criarUsuario: CriarUsuarioDto) {
+    try {
+      const result = await this.registerService.criarUsuario(criarUsuario);
+      console.log(result)
+      return result; // ⚡ NestJS transforma em JSON automaticamente
+    } catch (error) {
+      console.error(error);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      throw new HttpException(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        { sucesso: false, mensagem: error.message },
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   @Post('validarCodigo')
