@@ -23,7 +23,7 @@ export default function Login(){
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // 🔥 importante
+                credentials: 'include', // importante
                 body: JSON.stringify({ email, password })
             });
 

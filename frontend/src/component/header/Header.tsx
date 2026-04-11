@@ -1,9 +1,16 @@
+import styles from './Header.module.css'
+
 export default function Header(){
     
     return(
 
         <>
-            <h2 style={{textAlign:"center"}}>Pagina inicial</h2>
+            <div className={styles.conteiner}>
+                <i className={`bi bi-list ${styles.icone}`}></i>
+                <div className={styles.logo}>
+                    Logo
+                </div>
+            </div>
         </>
     )
 }
