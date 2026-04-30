@@ -23,7 +23,6 @@ export default function Login(){
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include', // importante
                 body: JSON.stringify({ email, password })
             });
 
@@ -36,11 +35,11 @@ export default function Login(){
             const data = await response.json();
             console.log('DATA:', data);
             
+            alert('Login realizado com sucesso');
+            router.push('/home');
 
-            if(data.sucesso){
-                alert('Login realizado com sucesso');
-                router.push('/home');
-            }
+            // if(data.sucesso){
+            // }
 
         }catch(error){
             console.error(error);

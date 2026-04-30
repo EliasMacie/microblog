@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
 
 export async function login(req: Request) {
     const body = await req.json();
@@ -17,12 +17,15 @@ export async function login(req: Request) {
         return NextResponse.json(data, { status: response.status });
     }
 
-    const res = NextResponse.json(data);
+    const res = NextResponse.json({ message: 'Login OK' });
 
-    const setCookie = response.headers.get('set-cookie');
-    if (setCookie) {
-        res.headers.set('set-cookie', setCookie);
-    }
+    res.cookies.set('access_token', data.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== 'development',
+        maxAge: 60 * 60 * 24,
+        path: '/',
+        sameSite: 'lax',
+    });
 
     return res;
 }

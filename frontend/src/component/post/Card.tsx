@@ -1,6 +1,18 @@
+import { useState } from 'react';
 import styles from './Card.module.css'
 
-export default function Card(){
+type props = {
+    post_id: number;
+    conteudo: string;
+    perfil_id: number;
+    username: string;
+    nome: string;
+    created_at: string;
+}
+
+
+
+export default function Card({ post_id, conteudo, perfil_id, username, nome, created_at }:props){
 
     return(
         <div className={styles.conteiner}>
@@ -11,18 +23,16 @@ export default function Card(){
                 <div className={styles.header}>
                     <div className={styles.headerInfo}>
                         <div className={styles.userInfo}>
-                            <p>Minine</p>
-                            <p style={{color:"#737373", fontSize:"14px"}}>@mateumini</p>
+                            <p>{nome}</p>
+                            <p style={{color:"#737373", fontSize:"14px"}}>@{username}</p>
                         </div>
                         <div className={styles.dot}></div>
-                        <p style={{color:"#737373"}}>feb 13</p>
+                        <p style={{color:"#737373"}}>{created_at}</p>
                     </div>
                     <i className="bi bi-three-dots" style={{color:"#737373"}}></i>
                 </div>
                 <div className={styles.content}>
-                    They ara whacking the South Koreans bad and the 
-                    Brazilians came in like the avengers to add i've 
-                    got tears in my eyes
+                    {conteudo}
                 </div>
                 <div className={styles.status}>
                     <div style={{display:"flex", gap:"5px", alignItems:"center"}}>

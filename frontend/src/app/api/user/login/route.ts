@@ -7,7 +7,7 @@ export async function POST(req: Request) {
 
     switch (op) {
         case "login":
-            return await login(req); // ← sem NextResponse.json()
+            return await login(req); 
         default:
             return NextResponse.json({ error: "Operação inválida" }, { status: 400 });
     }
