@@ -11,7 +11,7 @@ export async function criarUsuario(req: Request){
         body: JSON.stringify(body)
     })
 
-    // ✅ checar se deu certo antes de parsear
+    // checar se deu certo antes de parsear
     if (!response.ok) {
         const text = await response.text(); // pega erro real
         console.error('Erro no backend:', text);

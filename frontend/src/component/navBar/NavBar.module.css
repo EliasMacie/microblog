@@ -17,3 +17,66 @@
 .navButton{
     all: unset;
 }
+
+.overlay{
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal{
+    display: flex;
+    padding: 20px 15px;
+    height: 270px;
+    width: 85%;
+    background-color: white;
+    flex-direction: column;
+    border: 1px solid black;
+    gap: 5px;
+}
+
+.closeModalArea{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    flex: 0 0 40px;
+}
+
+.closeModalButton{
+    padding: 5px;
+    all: unset;
+}
+
+.textArea{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+.buttonArea{
+    display: flex;
+    justify-content: center;
+    flex: 0 0 50px;
+    width: 100%;
+}
+
+.text{
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    resize: none;
+}
+
+.post{
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    color: white;
+}
